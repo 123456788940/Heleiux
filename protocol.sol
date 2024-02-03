@@ -10,7 +10,9 @@ contract HeleiuxProtocol is ERC20 {
     constructor() ERC20("Heliux Token", "HT"){
       _mint(msg.sender, 100000000000000*10**18);
       owner = msg.sender;
-    }   uint lockPeriod = 365 days;
+    }  
+    
+     uint lockPeriod = 365 days;
          uint rewardPerBlock = 10;
         mapping(address=>uint) public stakingBalance;
         mapping(address=>uint) public lastClaimedBlock;
