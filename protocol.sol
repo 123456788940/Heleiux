@@ -8,9 +8,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract HeleiuxProtocol is ERC20 {
     constructor() ERC20("Heliux Token", "HT"){
-      _mint(msg.sender, 100000000000000*10*18);
+      _mint(msg.sender, 100000000000000*10**18);
       owner = msg.sender;
-    }
+    }   uint lockPeriod = 365 days;
          uint rewardPerBlock = 10;
         mapping(address=>uint) public stakingBalance;
         mapping(address=>uint) public lastClaimedBlock;
@@ -25,7 +25,7 @@ contract HeleiuxProtocol is ERC20 {
             require(balanceOf(msg.sender) >= amount, "not much tokens to stake");
             transfer(address(this), amount);
             stakingBalance[msg.sender] += amount;
-            lastClaimedBlock[msg.sender] = block.number;
+            lastClaimedBlock[msg.sender] = lockPeriod;
         }
 
         function unstake(uint amount) public onlyOwner {
@@ -33,7 +33,7 @@ contract HeleiuxProtocol is ERC20 {
             require(stakingBalance[msg.sender] >= amount, "Not enough staked tokens");
             transfer(msg.sender, amount);
             stakingBalance[msg.sender] -= amount;
-            lastClaimedBlock[msg.sender] = block.number;
+            lastClaimedBlock[msg.sender] = lockPeriod;
         }
 
         function claimReward() public {
@@ -42,6 +42,6 @@ contract HeleiuxProtocol is ERC20 {
             uint reward =stakingBalance[msg.sender] * rewardPerBlock * blockSinceLastClaim;
             require(reward>0, "no reward claimed");
             _mint(msg.sender, reward);
-            lastClaimedBlock[msg.sender] = block.number;
+            lastClaimedBlock[msg.sender] = lockPeriod;
         }
 }
