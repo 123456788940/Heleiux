@@ -40,7 +40,7 @@ event _settransfer(address feeRecipient, address owner, uint amount);
 
     function mint(uint amount, address to) public onlyOwner{
    
-           _mint(to, amount);
+           _mint(address(this), amount);
            maxSupply+=amount;
 
     }
