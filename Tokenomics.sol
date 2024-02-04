@@ -11,7 +11,7 @@ contract Tokenomics is ERC20 {
     address public feeRecipient;
     uint public maxSupply= 100000000000000000;
 
-    constructor() ERC20("Helix Token", "HT") {
+    constructor() ERC20("Helix Token", "HLX") {
         _mint(msg.sender, maxSupply);
         owner=msg.sender;
         feeRecipient=msg.sender;
