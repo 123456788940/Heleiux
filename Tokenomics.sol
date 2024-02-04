@@ -48,9 +48,9 @@ event _settransfer(address feeRecipient, address owner, uint amount);
     function burn(address distributeTo, uint amount) public onlyOwner {
         
         _burn(address(this), amount);
-        transferFrom(address(this), distributeTo,  amount*100/5);
-           transferFrom(address(this), charityWallet, amount*100/10);
-             transferFrom(address(this), companyAccount, amount*100/75);
+        transferFrom(address(this), distributeTo,  amount*5/100);
+           transferFrom(address(this), charityWallet, amount*10/100);
+             transferFrom(address(this), companyAccount, amount*85/100);
            maxSupply-=amount;
          
        
