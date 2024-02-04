@@ -6,15 +6,18 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 
 contract Tokenomics is ERC20 {
-
+    address private charityWallet;
     address public owner;
     address public feeRecipient;
     uint public maxSupply= 100000000000000000;
+    address private companyAccount;
 
-    constructor() ERC20("Helix Token", "HLX") {
+    constructor(address _charityWallet, address _companyAccount) ERC20("Helix Token", "HLX") {
         _mint(msg.sender, maxSupply);
         owner=msg.sender;
         feeRecipient=msg.sender;
+        charityWallet=_charityWallet;
+        companyAccount=_companyAccount;
     }
 
     modifier onlyOwner(){
@@ -36,13 +39,21 @@ event _settransfer(address feeRecipient, address owner, uint amount);
     }
 
     function mint(uint amount, address to) public onlyOwner{
-     
+   
            _mint(to, amount);
+           maxSupply+=amount;
 
     }
 
-    function burn(uint amount) public onlyOwner {
-        _burn(msg.sender, amount);
+    function burn(address distributeTo, uint amount) public onlyOwner {
+        
+        _burn(address(this), amount);
+        transferFrom(address(this), distributeTo,  amount*100/5);
+           transferFrom(address(this), charityWallet, amount*100/10);
+             transferFrom(address(this), companyAccount, amount*100/75);
+           maxSupply-=amount;
+         
+       
     }
 
     function trackTokens() public view returns(uint){
